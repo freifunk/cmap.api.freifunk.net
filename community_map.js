@@ -137,10 +137,10 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   });
   widget.map.addControl(testButton);
   
-  var controls = L.control.layers(
-    cloudmadeLayer, 
-    osmlayer
-  ).addTo(widget.map);
+  var controls = L.control.layers({
+    "Gray": cloudmadeLayer,
+    "OSM": osmlayer
+  }).addTo(widget.map);
   
   $.getJSON(options['geoJSONUrl'], function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
