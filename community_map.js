@@ -87,6 +87,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     geoJSONUrl: 'http://weimarnetz.de/ffmap/ffMap.json',
     getPopupHTML: renderPopup,
     zoom: 5,
+    maxZoom: 10,
     center: [51.5, 10.5]
   }, options);
   
@@ -114,11 +115,11 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   }).addTo(widget.map);
   
   var testButton = new L.Control.Button({
-    'text': "",
-    'iconUrl': "/images/location-icon.png",
-    'hideText': true,
-    'doToggle': false,
-    'onClick': function(e) {
+    text: "",
+    iconUrl: "/images/location-icon.png",
+    hideText: true,
+    doToggle: false,
+    onClick: function(e) {
         var btn = $(this);
         /* disable the location button visually if location permission is not granted */
         widget.map.on('locationerror', function(e) {
@@ -142,10 +143,10 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     "OSM": osmlayer
   }).addTo(widget.map);
   
-  $.getJSON(options['geoJSONUrl'], function(geojson) {
+  $.getJSON(options.geoJSONUrl, function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
       onEachFeature: function(feature, layer) {
-        layer.bindPopup(options['getPopupHTML'](feature.properties), { minWidth: 210 });
+        layer.bindPopup(options.getPopupHTML(feature.properties), { minWidth: 210 });
       },
       pointToLayer: function(feature, latlng) {
         var marker = L.circleMarker(latlng, {
