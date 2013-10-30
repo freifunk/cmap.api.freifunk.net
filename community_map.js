@@ -105,7 +105,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   
   var osmlayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(widget.map);
+  });
   
   var clusters = L.markerClusterGroup({ 
     spiderfyOnMaxZoom: false, 
