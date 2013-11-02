@@ -1,15 +1,13 @@
 var http = require("http");
 var url = require("url");
-var path = require("path");
-var fs = require("fs");
 var port = process.argv[2] || 8080;
  
 http.createServer(function(request, response) {
  
   var uri = url.parse(request.url).pathname;
-  var filename = path.join(process.cwd(), uri);
+  var filename = process.cwd() + uri;
   
-  path.exists(filename, function(exists) {
+  fs.exists(filename, function(exists) {
     if(!exists) {
       response.writeHead(404, {"Content-Type": "text/plain"});
       response.write("404 Not Found\n");
