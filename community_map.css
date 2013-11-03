@@ -7,6 +7,21 @@ html, body, #map {
   height: 100%;
 }
 
+
+/* Leaflet controls */
 .leaflet-bar a, .leaflet-bar a:hover {
   color: #DF3A6C;
 }
+/* /Leaflet controls */
+
+
+/* MarkerCluster */
+.marker-cluster-small,
+.marker-cluster-medium {
+	background-color: rgba(0, 158, 224, 0.3);
+}
+.marker-cluster-small div,
+.marker-cluster-medium div {
+  background-color: rgba(0, 158, 224, 0.7);
+}
+/* /MarkerCluster */
