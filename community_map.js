@@ -28,7 +28,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
         props.state = 'up-to-date';
       } else if (ageindays < 7) {
         props.state = 'valid';
-      } else {
+      } else {PopupHtml
         props.state = 'outdated';
       }
    } else {
@@ -124,7 +124,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   });
   
   //set default layer
-  widget.map.addLayer(osmlayer);
+  widget.map.addLayer(cloudmadeLayer);
   
   var clusters = L.markerClusterGroup({ 
     spiderfyOnMaxZoom: false, 
