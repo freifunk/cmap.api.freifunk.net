@@ -22,18 +22,21 @@ var FFCommunityMapWidget = function(options, map_options, link) {
       props.identica = "identica:" + props.identica;
     }
     
-    if (props.mtime) {
-      var ageindays = (Math.round(+new Date()/1000) - props.mtime) / 3600;
-      if (ageindays < 1) {
-        props.state = 'up-to-date';
-      } else if (ageindays < 7) {
-        props.state = 'valid';
-      } else {
-        props.state = 'outdated';
-      }
-   } else {
-     props.state = 'unknown';
-   }
+    function getStateFromProperties(props) {
+      var state = 'unknown';
+      if (props.mtime) {
+        var ageindays = (Math.round(+new Date()/1000) - props.mtime) / 3600;
+        if (ageindays < 1) {
+          state = 'up-to-date';
+        } else if (ageindays < 7) {
+          state = 'valid';
+        } else {
+          state = 'outdated';
+        }
+      } 
+      return state;
+    };
+    props.state = getStateFromProperties(props);
     
     props.contacts =  [];
     if (props.url) {
