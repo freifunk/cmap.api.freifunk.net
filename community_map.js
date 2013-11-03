@@ -136,7 +136,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   }).addTo(widget.map);
   
   var testButton = new L.Control.Button({
-    iconUrl: "/images/location-icon.png",
+    iconUrl: "./images/location-icon.png",
     hideText: true,
     doToggle: false,
     onClick: function(e) {
