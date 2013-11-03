@@ -1,6 +1,7 @@
 var FFCommunityMapWidget = function(options, map_options, link) {
   
   var renderPopup = function (props) {
+    //console.log(props);
     //clean up values before rendering
     if (props.url && !props.url.match(/^http([s]?):\/\/.*/)) { 
       props.url = "http://" + props.url; 
@@ -20,6 +21,18 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     if (props.identica && !props.identica.match(/^identica:.*/)) {
       props.identica = "identica:" + props.identica;
     }
+    
+    if (props.mtime) {
+      if (Math.round(+new Date()/1000) - props.mtime < 86400) { //not older than one day
+        props.state = 'up-to-date';
+      } else if (Math.round(+new Date()/1000) - props.mtime < 604800) { //not older than one week
+        props.state = 'valid';
+      } else { //older than one week
+        props.state = 'outdated';
+      }
+   } else {
+     props.state = 'unknown';
+   }
     
     props.contacts =  [];
     if (props.url) {
@@ -78,6 +91,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
       });
     }
     
+    
     //render html and return
     return widget.communityTemplate(props);
   };
@@ -102,11 +116,14 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     styleId: 102828, 
     key: '3249f584dd674d399238a99850abcbae', 
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>'
-  }).addTo(widget.map);
+  });
   
   var osmlayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   });
+  
+  //set default layer
+  widget.map.addLayer(osmlayer);
   
   var clusters = L.markerClusterGroup({ 
     spiderfyOnMaxZoom: false, 

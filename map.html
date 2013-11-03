@@ -19,9 +19,40 @@
       .community-popup h3 { 
         font-size: 12px;
         margin: 0px;
+        color: #009ee0
+      }
+      .community-popup .leaflet-container a {
+        color: #009ee0;
       }
       .community-popup .nodes {
         margin: 10px 0px;
+      }
+      .community-popup .state,
+      .community-popup .state.unknown {
+        display: block;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        border-radius: 10px;
+        border: 1px solid gray;
+        background: lightgray;
+      }
+      .community-popup .state.up-to-date {
+        border: 1px solid green;
+        background: lightgreen;
+      }
+      .community-popup .state.valid {
+        border: 1px solid orange;
+        background: darkorange;
+      }
+      .community-popup .state.outdated {
+        border: 1px solid darkred;
+        background: red;
+      }
+      .community-popup .state span {
+        display: none;
       }
       .community-popup ul.contacts {
         list-style: none;
@@ -102,6 +133,10 @@
 
     <% if (props.phone) { %>
       <div class="phone">&#9742; <%- props.phone  %></div>
+    <% } %>
+
+    <% if (props.state) { %>
+      <div class="state <%- props.state  %>" title="the state of the community data is: <%- props.state  %>"><span><%- props.state  %></span></div>
     <% } %>
 
     <ul class="contacts" style="height:<%- Math.round(props.contacts.length/6+0.4)*30+10 %>px; width: <%- 6*(30+5)%>px;">
