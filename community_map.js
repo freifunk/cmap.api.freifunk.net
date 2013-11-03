@@ -23,11 +23,12 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     }
     
     if (props.mtime) {
-      if (Math.round(+new Date()/1000) - props.mtime < 86400) { //not older than one day
+      var ageindays = (Math.round(+new Date()/1000) - props.mtime) / 3600;
+      if (ageindays < 1) {
         props.state = 'up-to-date';
-      } else if (Math.round(+new Date()/1000) - props.mtime < 604800) { //not older than one week
+      } else if (ageindays < 7) {
         props.state = 'valid';
-      } else { //older than one week
+      } else {
         props.state = 'outdated';
       }
    } else {
