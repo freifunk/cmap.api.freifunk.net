@@ -28,7 +28,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
         props.state = 'up-to-date';
       } else if (ageindays < 7) {
         props.state = 'valid';
-      } else {PopupHtml
+      } else {
         props.state = 'outdated';
       }
    } else {
