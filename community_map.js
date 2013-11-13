@@ -25,7 +25,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     function getStateFromProperties(props) {
       var state = 'unknown';
       if (props.mtime) {
-        var ageindays = (Math.round(+new Date()/1000) - props.mtime) / 3600;
+        var ageindays = (Math.round(+new Date()/1000) - props.mtime) / (3600*24);
         if (ageindays < 1) {
           state = 'up-to-date';
         } else if (ageindays < 7) {
