@@ -122,9 +122,6 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>'
   });
   
-  var osmlayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-  });
   
   //set default layer
   widget.map.addLayer(cloudmadeLayer);
@@ -157,11 +154,6 @@ var FFCommunityMapWidget = function(options, map_options, link) {
       }
   });
   widget.map.addControl(testButton);
-  
-  var controls = L.control.layers({
-    "Gray": cloudmadeLayer,
-    "OSM": osmlayer
-  }).addTo(widget.map);
   
   $.getJSON(options.geoJSONUrl, function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
