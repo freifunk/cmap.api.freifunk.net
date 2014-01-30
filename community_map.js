@@ -160,6 +160,13 @@ var FFCommunityMapWidget = function(options, map_options, link) {
       onEachFeature: function(feature, layer) {
         layer.bindPopup(options.getPopupHTML(feature.properties), { minWidth: 210 });
       },
+      filter: function(feature, layer) {
+        if (feature.geometry.coordinates[0] && feature.geometry.coordinates[1]) {
+          return true;
+        } else {
+          return false;
+        }
+      },
       pointToLayer: function(feature, latlng) {
         var marker = L.circleMarker(latlng, {
           //title: feature.properties.name,
