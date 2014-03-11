@@ -102,7 +102,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   
   var options = L.extend({
     divId: 'map',
-    geoJSONUrl: 'http://weimarnetz.de/ffmap/ffMap.json',
+    geoJSONUrl: '/map/ffGeoJson.json',
     getPopupHTML: renderPopup,
     zoom: 5,
     maxZoom: 10,
@@ -132,28 +132,28 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     maxClusterRadius: 40 
   }).addTo(widget.map);
   
-  var testButton = new L.Control.Button({
-    iconUrl: "./images/location-icon.png",
-    hideText: true,
-    doToggle: false,
-    onClick: function(e) {
-        var btn = $(this);
-        /* disable the location button visually if location permission is not granted */
-        widget.map.on('locationerror', function(e) {
-          if (e.code == 1 /*PERMISSION_DENIED*/) {
-            btn.addClass('disabled');
-            console.log(btn);
-          }
-        });
-        /* try to read the user location and center map there */
-        widget.map.locate({
-          setView: true, 
-          maxZoom: 8, 
-          timeout: 30000
-        });
-      }
-  });
-  widget.map.addControl(testButton);
+//  var testButton = new L.Control.Button({
+//    iconUrl: "./images/location-icon.png",
+//    hideText: true,
+//    doToggle: false,
+//    onClick: function(e) {
+//        var btn = $(this);
+//        /* disable the location button visually if location permission is not granted */
+//        widget.map.on('locationerror', function(e) {
+//          if (e.code == 1 /*PERMISSION_DENIED*/) {
+//            btn.addClass('disabled');
+//            console.log(btn);
+//          }
+//        });
+//        /* try to read the user location and center map there */
+//        widget.map.locate({
+//          setView: true, 
+//          maxZoom: 8, 
+//          timeout: 30000
+//        });
+//      }
+//  });
+//  widget.map.addControl(testButton);
   
   $.getJSON(options.geoJSONUrl, function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
@@ -182,6 +182,20 @@ var FFCommunityMapWidget = function(options, map_options, link) {
         return marker;
       }
     }).addTo(clusters);
+    //add stats info box
+    var legend = L.control({position: 'bottomleft'});
+    legend.onAdd = function(data) {
+      var div = L.DomUtil.create('div', 'info legend');
+      var nodes = 0;
+      _.each(geojson.features, function(item, key, list) {
+	if (item.properties.nodes) {nodes += parseInt(item.properties.nodes);}
+      });
+      div.innerHTML = '<strong>' + geojson.features.length + ' Orte</strong>';
+      div.innerHTML += '<hr>';
+      div.innerHTML += '<strong>' + nodes + ' Knoten</strong>';
+      return div;
+    };
+    legend.addTo(widget.map);
   });
   
   //initialize underscore tamplating
