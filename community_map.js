@@ -185,14 +185,14 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     //add stats info box
     var legend = L.control({position: 'bottomleft'});
     legend.onAdd = function(data) {
-      var div = L.DomUtil.create('div', 'info legend');
+      var div = L.DomUtil.create('div', 'info');
       var nodes = 0;
       _.each(geojson.features, function(item, key, list) {
 	if (item.properties.nodes) {nodes += parseInt(item.properties.nodes);}
       });
       div.innerHTML = '<strong>' + geojson.features.length + ' Orte</strong>';
       div.innerHTML += '<hr>';
-      div.innerHTML += '<strong>' + nodes + ' Knoten</strong>';
+      div.innerHTML += '<strong>' + nodes + ' Zugänge</strong>';
       return div;
     };
     legend.addTo(widget.map);
