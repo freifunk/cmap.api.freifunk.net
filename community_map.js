@@ -116,15 +116,21 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     options.zoom
   );
   
-  var cloudmadeLayer = L.tileLayer('https://ssl_tiles.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-    styleId: 102828, 
-    key: '3249f584dd674d399238a99850abcbae', 
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>'
+//  var cloudmadeLayer = L.tileLayer('https://ssl_tiles.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
+//    styleId: 102828, 
+//    key: '3249f584dd674d399238a99850abcbae', 
+//    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>'
+//  });
+  var mapboxLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/freienetzwerke.i2lgkb76/{z}/{x}/{y}.png', {
+    attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
   });
+  //var map = L.map('map')
+  //  .addLayer(mapboxTiles)
+  //  .setView([38, -102.0], 9);
   
   
   //set default layer
-  widget.map.addLayer(cloudmadeLayer);
+  widget.map.addLayer(mapboxLayer);
   
   var clusters = L.markerClusterGroup({ 
     spiderfyOnMaxZoom: false, 
