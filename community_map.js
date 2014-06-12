@@ -22,11 +22,21 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
       props.identica = "identica:" + props.identica;
     }
     
+    function getAgeFromProperties(props) {
+      var ageindays = -1;
+      if (props.mtime) {
+        ageindays = Math.round((Math.round(+new Date()/1000) - props.mtime) / (3600*24));
+      } 
+      return ageindays;
+    };
+    
     function getStateFromProperties(props) {
       var state = 'unknown';
       if (props.mtime) {
-        var ageindays = (Math.round(+new Date()/1000) - props.mtime) / (3600*24);
-        if (ageindays < 1) {
+        var ageindays = getAgeFromProperties(props);
+        if (ageindays < 0 || isNaN(ageindays)) {
+          state = 'unknown';
+        } else if (ageindays < 2) {
           state = 'up-to-date';
         } else if (ageindays < 7) {
           state = 'valid';
@@ -36,6 +46,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
       } 
       return state;
     };
+    props.age = getAgeFromProperties(props);
     props.state = getStateFromProperties(props);
     
     props.contacts =  [];

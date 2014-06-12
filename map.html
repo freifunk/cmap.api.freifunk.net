@@ -36,13 +36,17 @@
     <% } %>
   
     <% if (props.nodes) { %>
-      <div class="nodes">Zug&auml;nge: <%- props.nodes  %></div>
+      <div class="nodes">
+         Zug&auml;nge: <%- props.nodes  %>
+         <% if (props.state && props.age) { %>
+            <span class="state <%- props.state  %>" title="Die letzte Aktualisierung der Daten war vor <%- props.age  %> Tagen">(<%- props.state  %>)</span>
+         <% } %>
+      </div>
     <% } %>
 
     <% if (props.phone) { %>
       <div class="phone">&#9742; <%- props.phone  %></div>
     <% } %>
-
 
     <ul class="contacts" style="height:<%- Math.round(props.contacts.length/6+0.4)*30+10 %>px; width: <%- 6*(30+5)%>px;">
     <% _.each(props.contacts, function(contact, index, list) { %>

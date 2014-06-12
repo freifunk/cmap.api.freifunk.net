@@ -7,6 +7,17 @@ html, body, #map {
   height: 100%;
 }
 
+a,
+.leaflet-container a {
+	color: #DF3A6C;
+	text-decoration:none;
+}
+a:hover,
+.leaflet-container a:hover {
+	color: #DF3A6C;
+	text-decoration:underline;
+}
+
 
 /* Leaflet controls */
 .leaflet-bar a, .leaflet-bar a:hover {
@@ -40,27 +51,20 @@ html, body, #map {
 }
 .community-popup .state,
 .community-popup .state.unknown {
-  display: block;
-  width: 5px;
-  height: 15px;
-  position: absolute;
-  top: 15px;
-  left: 11px;
-  border: none;
-  background: lightgray;
+  display: inline-block;
+  text-size: 0.5em;
+  color: lightgray;
 }
 .community-popup .state.up-to-date {
-  background: green;
+  color: green;
 }
 .community-popup .state.valid {
-  background: orange;
+  color: orange;
 }
 .community-popup .state.outdated {
-  background: red;
+  color: red;
 }
-.community-popup .state span {
-  display: none;
-}
+
 .community-popup ul.contacts {
   list-style: none;
   margin: 10px 0px 0px 0px;
