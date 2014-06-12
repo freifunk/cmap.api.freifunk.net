@@ -1,4 +1,4 @@
-var FFCommunityMapWidget = function(options, map_options, link) {
+var FFCommunityMapWidget = function(settings, map_options, link) {
   
   var renderPopup = function (props) {
     //console.log(props);
@@ -102,7 +102,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   
   var options = L.extend({
     divId: 'map',
-    geoJSONUrl: '/map/ffGeoJson.json',
+    geoJSONUrl: settings.geoJson || "/map/ffGeoJson.json",
     getPopupHTML: renderPopup,
     zoom: 5,
     maxZoom: 10,

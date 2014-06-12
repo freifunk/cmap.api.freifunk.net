@@ -60,7 +60,9 @@
   <script type="text/javascript" src="external/underscore/underscore-min.js"></script>
   <script type="text/javascript" src="community_map.js"></script>
   <script>
-    var widget = FFCommunityMapWidget();
+    var widget = FFCommunityMapWidget({
+        geoJson: 'http://weimarnetz.de/ffmap/ffMap.json'
+    });
   </script>
 </body>
 </html>
