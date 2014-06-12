@@ -23,6 +23,11 @@ a:hover,
 .leaflet-bar a, .leaflet-bar a:hover {
   color: #DF3A6C;
 }
+
+.leaflet-buttons-control-button {
+	height: 100%;
+	width: 100%;
+}
 /* /Leaflet controls */
 
 
@@ -37,6 +42,7 @@ a:hover,
 }
 /* /MarkerCluster */
 
+/* community-popup */
 .community-popup h2, 
 .community-popup h3 { 
   font-size: 12px;
@@ -123,6 +129,9 @@ a:hover,
 .community-popup ul.contacts li.contact a.button.youtube {
  background-position: 0px -360px;
 }
+/* /community-popup */
+
+
 .info {
     padding: 6px 8px;
     background: white;

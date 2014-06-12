@@ -116,7 +116,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     geoJSONUrl: settings.geoJson || "/map/ffGeoJson.json",
     getPopupHTML: renderPopup,
     zoom: 5,
-    maxZoom: 10,
+    maxZoom: 8,
     center: [51.5, 10.5]
   }, options);
   
@@ -127,18 +127,13 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     options.zoom
   );
   
-//  var cloudmadeLayer = L.tileLayer('https://ssl_tiles.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-//    styleId: 102828, 
-//    key: '3249f584dd674d399238a99850abcbae', 
-//    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>'
-//  });
   var mapboxLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/freienetzwerke.i2lgkb76/{z}/{x}/{y}.png', {
     attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
   });
-  //var map = L.map('map')
-  //  .addLayer(mapboxTiles)
-  //  .setView([38, -102.0], 9);
   
+  var osmlayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+  });
   
   //set default layer
   widget.map.addLayer(mapboxLayer);
@@ -149,28 +144,33 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     maxClusterRadius: 40 
   }).addTo(widget.map);
   
-//  var testButton = new L.Control.Button({
-//    iconUrl: "./images/location-icon.png",
-//    hideText: true,
-//    doToggle: false,
-//    onClick: function(e) {
-//        var btn = $(this);
-//        /* disable the location button visually if location permission is not granted */
-//        widget.map.on('locationerror', function(e) {
-//          if (e.code == 1 /*PERMISSION_DENIED*/) {
-//            btn.addClass('disabled');
-//            console.log(btn);
-//          }
-//        });
-//        /* try to read the user location and center map there */
-//        widget.map.locate({
-//          setView: true, 
-//          maxZoom: 8, 
-//          timeout: 30000
-//        });
-//      }
-//  });
-//  widget.map.addControl(testButton);
+  var testButton = new L.Control.Button({
+    iconUrl: "./images/location-icon.png",
+    hideText: true,
+    doToggle: false,
+    onClick: function(e) {
+        var btn = $(this);
+        /* disable the location button visually if location permission is not granted */
+        widget.map.on('locationerror', function(e) {
+          if (e.code == 1 /*PERMISSION_DENIED*/) {
+            btn.addClass('disabled');
+            console.log(btn);
+          }
+        });
+        /* try to read the user location and center map there */
+        widget.map.locate({
+          setView: true, 
+          maxZoom: 8, 
+          timeout: 30000
+        });
+      }
+  });
+  widget.map.addControl(testButton);
+  
+  var controls = L.control.layers({
+    "Gray": mapboxLayer,
+    "OSM": osmlayer
+  }).addTo(widget.map);
   
   $.getJSON(options.geoJSONUrl, function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
@@ -199,6 +199,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
         return marker;
       }
     }).addTo(clusters);
+    
     //add stats info box
     var legend = L.control({position: 'bottomleft'});
     legend.onAdd = function(data) {
