@@ -7,18 +7,6 @@ html, body, #map {
   height: 100%;
 }
 
-a,
-.leaflet-container a {
-	color: #DF3A6C;
-	text-decoration:none;
-}
-a:hover,
-.leaflet-container a:hover {
-	color: #DF3A6C;
-	text-decoration:underline;
-}
-
-
 /* Leaflet controls */
 .leaflet-bar a, .leaflet-bar a:hover {
   color: #DF3A6C;
