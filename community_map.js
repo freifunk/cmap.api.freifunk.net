@@ -144,33 +144,37 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     maxClusterRadius: 40 
   }).addTo(widget.map);
   
-  var testButton = new L.Control.Button({
-    iconUrl: "./images/location-icon.png",
-    hideText: true,
-    doToggle: false,
-    onClick: function(e) {
-        var btn = $(this);
-        /* disable the location button visually if location permission is not granted */
-        widget.map.on('locationerror', function(e) {
-          if (e.code == 1 /*PERMISSION_DENIED*/) {
-            btn.addClass('disabled');
-            console.log(btn);
-          }
-        });
-        /* try to read the user location and center map there */
-        widget.map.locate({
-          setView: true, 
-          maxZoom: 8, 
-          timeout: 30000
-        });
-      }
-  });
-  widget.map.addControl(testButton);
+  if (!settings.hideLocationButton) {
+    var locationButton = new L.Control.Button({
+      iconUrl: "./images/location-icon.png",
+      hideText: true,
+      doToggle: false,
+      onClick: function(e) {
+          var btn = $(this);
+          /* disable the location button visually if location permission is not granted */
+          widget.map.on('locationerror', function(e) {
+            if (e.code == 1 /*PERMISSION_DENIED*/) {
+              btn.addClass('disabled');
+              console.log(btn);
+            }
+          });
+          /* try to read the user location and center map there */
+          widget.map.locate({
+            setView: true, 
+            maxZoom: 8, 
+            timeout: 30000
+          });
+        }
+    });
+    widget.map.addControl(locationButton);
+  }
   
-  var controls = L.control.layers({
-    "Gray": mapboxLayer,
-    "OSM": osmlayer
-  }).addTo(widget.map);
+  if (!settings.hideLayerControl) {
+    var controls = L.control.layers({
+      "Gray": mapboxLayer,
+      "OSM": osmlayer
+    }).addTo(widget.map);
+  }
   
   $.getJSON(options.geoJSONUrl, function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
@@ -201,19 +205,21 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     }).addTo(clusters);
     
     //add stats info box
-    var legend = L.control({position: 'bottomleft'});
-    legend.onAdd = function(data) {
-      var div = L.DomUtil.create('div', 'info');
-      var nodes = 0;
-      _.each(geojson.features, function(item, key, list) {
-	if (item.properties.nodes) {nodes += parseInt(item.properties.nodes);}
-      });
-      div.innerHTML = '<strong>' + geojson.features.length + ' Orte</strong>';
-      div.innerHTML += '<hr>';
-      div.innerHTML += '<strong>' + nodes + ' Zugänge</strong>';
-      return div;
-    };
-    legend.addTo(widget.map);
+    if (!settings.hideInfoBox) {
+      var legend = L.control({position: 'bottomleft'});
+      legend.onAdd = function(data) {
+        var div = L.DomUtil.create('div', 'info');
+        var nodes = 0;
+        _.each(geojson.features, function(item, key, list) {
+          if (item.properties.nodes) { nodes += parseInt(item.properties.nodes); }
+        });
+        div.innerHTML = '<strong>' + geojson.features.length + ' Orte</strong>';
+        div.innerHTML += '<hr>';
+        div.innerHTML += '<strong>' + nodes + ' Zugänge</strong>';
+        return div;
+      };
+      legend.addTo(widget.map);
+    }
   });
   
   //initialize underscore tamplating
