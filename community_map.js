@@ -1,4 +1,4 @@
-var FFCommunityMapWidget = function(options, map_options, link) {
+var FFCommunityMapWidget = function(settings, map_options, link) {
   
   var renderPopup = function (props) {
     //console.log(props);
@@ -22,11 +22,21 @@ var FFCommunityMapWidget = function(options, map_options, link) {
       props.identica = "identica:" + props.identica;
     }
     
+    function getAgeFromProperties(props) {
+      var ageindays = -1;
+      if (props.mtime) {
+        ageindays = Math.round((Math.round(+new Date()/1000) - props.mtime) / (3600*24));
+      } 
+      return ageindays;
+    };
+    
     function getStateFromProperties(props) {
       var state = 'unknown';
       if (props.mtime) {
-        var ageindays = (Math.round(+new Date()/1000) - props.mtime) / (3600*24);
-        if (ageindays < 1) {
+        var ageindays = getAgeFromProperties(props);
+        if (ageindays < 0 || isNaN(ageindays)) {
+          state = 'unknown';
+        } else if (ageindays < 2) {
           state = 'up-to-date';
         } else if (ageindays < 7) {
           state = 'valid';
@@ -36,6 +46,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
       } 
       return state;
     };
+    props.age = getAgeFromProperties(props);
     props.state = getStateFromProperties(props);
     
     props.contacts =  [];
@@ -102,10 +113,10 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   
   var options = L.extend({
     divId: 'map',
-    geoJSONUrl: 'http://weimarnetz.de/ffmap/ffMap.json',
+    geoJSONUrl: settings.geoJson || "/map/ffGeoJson.json",
     getPopupHTML: renderPopup,
     zoom: 5,
-    maxZoom: 10,
+    maxZoom: 8,
     center: [51.5, 10.5]
   }, options);
   
@@ -116,10 +127,8 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     options.zoom
   );
   
-  var cloudmadeLayer = L.tileLayer('https://ssl_tiles.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-    styleId: 102828, 
-    key: '3249f584dd674d399238a99850abcbae', 
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>'
+  var mapboxLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/freienetzwerke.i2lgkb76/{z}/{x}/{y}.png', {
+    attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
   });
   
   var osmlayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -127,7 +136,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   });
   
   //set default layer
-  widget.map.addLayer(cloudmadeLayer);
+  widget.map.addLayer(mapboxLayer);
   
   var clusters = L.markerClusterGroup({ 
     spiderfyOnMaxZoom: false, 
@@ -135,38 +144,49 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     maxClusterRadius: 40 
   }).addTo(widget.map);
   
-  var testButton = new L.Control.Button({
-    iconUrl: "./images/location-icon.png",
-    hideText: true,
-    doToggle: false,
-    onClick: function(e) {
-        var btn = $(this);
-        /* disable the location button visually if location permission is not granted */
-        widget.map.on('locationerror', function(e) {
-          if (e.code == 1 /*PERMISSION_DENIED*/) {
-            btn.addClass('disabled');
-            console.log(btn);
-          }
-        });
-        /* try to read the user location and center map there */
-        widget.map.locate({
-          setView: true, 
-          maxZoom: 8, 
-          timeout: 30000
-        });
-      }
-  });
-  widget.map.addControl(testButton);
+  if (!settings.hideLocationButton) {
+    var locationButton = new L.Control.Button({
+      iconUrl: "./images/location-icon.png",
+      hideText: true,
+      doToggle: false,
+      onClick: function(e) {
+          var btn = $(this);
+          /* disable the location button visually if location permission is not granted */
+          widget.map.on('locationerror', function(e) {
+            if (e.code == 1 /*PERMISSION_DENIED*/) {
+              btn.addClass('disabled');
+              console.log(btn);
+            }
+          });
+          /* try to read the user location and center map there */
+          widget.map.locate({
+            setView: true, 
+            maxZoom: 8, 
+            timeout: 30000
+          });
+        }
+    });
+    widget.map.addControl(locationButton);
+  }
   
-  var controls = L.control.layers({
-    "Gray": cloudmadeLayer,
-    "OSM": osmlayer
-  }).addTo(widget.map);
+  if (!settings.hideLayerControl) {
+    var controls = L.control.layers({
+      "Gray": mapboxLayer,
+      "OSM": osmlayer
+    }).addTo(widget.map);
+  }
   
   $.getJSON(options.geoJSONUrl, function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
       onEachFeature: function(feature, layer) {
         layer.bindPopup(options.getPopupHTML(feature.properties), { minWidth: 210 });
+      },
+      filter: function(feature, layer) {
+        if (feature.geometry.coordinates[0] && feature.geometry.coordinates[1]) {
+          return true;
+        } else {
+          return false;
+        }
       },
       pointToLayer: function(feature, latlng) {
         var marker = L.circleMarker(latlng, {
@@ -183,6 +203,23 @@ var FFCommunityMapWidget = function(options, map_options, link) {
         return marker;
       }
     }).addTo(clusters);
+    
+    //add stats info box
+    if (!settings.hideInfoBox) {
+      var legend = L.control({position: 'bottomleft'});
+      legend.onAdd = function(data) {
+        var div = L.DomUtil.create('div', 'info');
+        var nodes = 0;
+        _.each(geojson.features, function(item, key, list) {
+          if (item.properties.nodes) { nodes += parseInt(item.properties.nodes); }
+        });
+        div.innerHTML = '<strong>' + geojson.features.length + ' Orte</strong>';
+        div.innerHTML += '<hr>';
+        div.innerHTML += '<strong>' + nodes + ' Zugänge</strong>';
+        return div;
+      };
+      legend.addTo(widget.map);
+    }
   });
   
   //initialize underscore tamplating
