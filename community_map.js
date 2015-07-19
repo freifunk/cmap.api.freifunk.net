@@ -246,7 +246,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
         if (items.length > 0) {
           console.log('There are some items');
           var rssfeed = $(e.popup._container).find('.community-popup').append('<div class="rssfeed">').find('.rssfeed');
-          rssfeed.append('<label>Recent posts</label>');
+          rssfeed.append('<label>Neues:</label>');
           var rssfeedList = rssfeed.append('<ul>').find('ul');
           items.each(function(k, item) {
             var blogLink = rssfeedList.append('<li><a class="bloglink" target="_blank">' + $(item).find('title').text() + '</a>'

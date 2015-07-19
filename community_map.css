@@ -155,7 +155,7 @@ iframe.embed-timeline {
   display: block;
 }
 .rssfeed {
-  margin: 8px;
+  margin-top: 8px;
 }
 .rssfeed .title {
   color: #47a3da;
