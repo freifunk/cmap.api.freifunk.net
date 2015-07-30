@@ -231,7 +231,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
   
   widget.map.on('popupopen', function(e){
     var url = configs.feedUrl
-        + '?limit=3&source='
+        + '?limit=' + configs.postContentLimit + '&source='
         + e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id');
     console.log(url);
     $.ajax({
@@ -250,7 +250,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
           var rssfeedList = rssfeed.append('<ul>').find('ul');
           items.each(function(k, item) {
             var blogLink = rssfeedList.append('<li><a class="bloglink" target="_blank">' + $(item).find('title').text() + '</a>'
-              + '<div class="description">' + $(item).find('description').text().substr(0, configs.postContenLimit) + '..</div></li>').find('a').last();
+              + '<div class="description">' + $(item).find('description').text().substr(0, configs.postContentLength) + '..</div></li>').find('a').last();
             blogLink.attr('href', $(item).find('link').text());
           });
         }
