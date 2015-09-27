@@ -113,7 +113,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
   
   var options = L.extend({
     divId: 'map',
-    geoJSONUrl: settings.geoJson || "/map/ffGeoJson.json",
+    ffGeoJsonUrl: settings.ffGeoJsonUrl || "/map/ffGeoJson.json",
     getPopupHTML: renderPopup,
     zoom: 5,
     maxZoom: 8,
@@ -177,7 +177,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
   }
   
   $.getJSON('config.json', function(configs) {
-  $.getJSON(options.geoJSONUrl, function(geojson) {
+  $.getJSON(options.ffGeoJsonUrl, function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
       onEachFeature: function(feature, layer) {
         layer.bindPopup(options.getPopupHTML(feature.properties, configs), { minWidth: 210 });
@@ -239,7 +239,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
 											
 				});
     var url = configs.feedUrl
-        + '?limit=3&source='
+        + '?limit=' + configs.postContentLimit + '&source='
         + e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id');
     console.log(url);
     $.ajax({
