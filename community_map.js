@@ -230,6 +230,14 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
   );
   
   widget.map.on('popupopen', function(e){
+			$('.events').communityTimeline({
+						source : e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id'),
+						title : 'Veranstaltungen',
+						limit: 2,
+						descLength: 30,
+						order : 'oldest-first'
+											
+				});
     var url = configs.feedUrl
         + '?limit=3&source='
         + e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id');
@@ -243,21 +251,21 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
       success: function(data) {
         $data = $($.parseXML(data));
         items = $data.find('item');
+        var rssfeed = $(e.popup._container).find('.community-popup').append('<div class="rssfeed rss-container">').find('.rssfeed');
+        rssfeed.append('<div class="rss-header"><div class="rss-title">Neuigkeiten</div></div>');
+        var rssfeedList = rssfeed.append('<div class="rss-body"><div id="mCSB_1" class="rss-news mCustomScrollbar _mCS_1 mCS-autoHide"><div id="mCSB_1_container" class="mCustomScrollBox mCS-light-3 mCSB_vertical">').find('.rss-news');
         if (items.length > 0) {
           console.log('There are some items');
-          var rssfeed = $(e.popup._container).find('.community-popup').append('<div class="rssfeed">').find('.rssfeed');
-          rssfeed.append('<label>Neues:</label>');
-          var rssfeedList = rssfeed.append('<ul>').find('ul');
           items.each(function(k, item) {
-            var blogLink = rssfeedList.append('<li><a class="bloglink" target="_blank">' + $(item).find('title').text() + '</a>'
-              + '<div class="description">' + $(item).find('description').text().substr(0, configs.postContenLimit) + '..</div></li>').find('a').last();
+            var blogLink = rssfeedList.append('<div class="rss-newsitem"><a class="bloglink" target="_blank">' + $(item).find('title').text() + '</a>'
+              + '</div>').find('a').last();
             blogLink.attr('href', $(item).find('link').text());
           });
         }
       },
       timeout: 20000
     });
-  });
+});
   });
   return widget;
 }
