@@ -127,7 +127,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     options.zoom
   );
   
-  var mapboxLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/freienetzwerke.i2lgkb76/{z}/{x}/{y}.png', {
+  var mapboxLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/'+settings.mapboxId+'/{z}/{x}/{y}.png', {
 attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy; Mapbox &copy; OpenStreetMap</a> <a class="mapbox-improve-map" href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a>'
   });
   
@@ -146,11 +146,11 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
   
   if (!settings.hideLocationButton) {
     var locationButton = new L.Control.Button({
-      iconUrl: "./images/location-icon.png",
+      iconUrl: "//api.freifunk.net/map/images/location-icon.png",
       hideText: true,
       doToggle: false,
       onClick: function(e) {
-          var btn = $(this);
+          var btn = jQuery(this);
           /* disable the location button visually if location permission is not granted */
           widget.map.on('locationerror', function(e) {
             if (e.code == 1 /*PERMISSION_DENIED*/) {
@@ -176,11 +176,11 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
     }).addTo(widget.map);
   }
   
-  $.getJSON('config.json', function(configs) {
-  $.getJSON(options.ffGeoJsonUrl, function(geojson) {
+//  jQuery.getJSON('', function(configs) {
+  jQuery.getJSON(options.ffGeoJsonUrl, function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
       onEachFeature: function(feature, layer) {
-        layer.bindPopup(options.getPopupHTML(feature.properties, configs), { minWidth: 210 });
+        layer.bindPopup(options.getPopupHTML(feature.properties, settings), { minWidth: 210 });
       },
       filter: function(feature, layer) {
         if (feature.geometry.coordinates[0] && feature.geometry.coordinates[1]) {
@@ -226,47 +226,47 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
   //initialize underscore templating
   _.templateSettings.variable = "props";
   widget.communityTemplate = _.template(
-    $( "script.template#community-popup" ).html()
+    jQuery( "script.template#community-popup" ).html()
   );
   
   widget.map.on('popupopen', function(e){
-			$('.events').communityTimeline({
+			jQuery('.events').communityTimeline({
 						source : e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id'),
 						title : 'Veranstaltungen',
-						limit: 2,
+						limit: '2',
 						descLength: 30,
 						order : 'oldest-first'
 											
 				});
-    var url = configs.feedUrl
-        + '?limit=' + configs.postContentLimit + '&source='
+    var url = settings.feedUrl
+        + '?limit=' + settings.postContentLimit + '&source='
         + e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id');
     console.log(url);
-    $.ajax({
+    jQuery.ajax({
       url: url,
       error: function(err) {
         console.log(err);
       },
       dataType: "jsonp",
       success: function(data) {
-        $data = $($.parseXML(data));
+        $data = jQuery(jQuery.parseXML(data));
         items = $data.find('item');
-        var rssfeed = $(e.popup._container).find('.community-popup').append('<div class="rssfeed rss-container">').find('.rssfeed');
+        var rssfeed = jQuery(e.popup._container).find('.community-popup').append('<div class="rssfeed rss-container">').find('.rssfeed');
         rssfeed.append('<div class="rss-header"><div class="rss-title">Neuigkeiten</div></div>');
         var rssfeedList = rssfeed.append('<div class="rss-body"><div id="mCSB_1" class="rss-news mCustomScrollbar _mCS_1 mCS-autoHide"><div id="mCSB_1_container" class="mCustomScrollBox mCS-light-3 mCSB_vertical">').find('.rss-news');
         if (items.length > 0) {
           console.log('There are some items');
           items.each(function(k, item) {
-            var blogLink = rssfeedList.append('<div class="rss-newsitem"><a class="bloglink" target="_blank">' + $(item).find('title').text() + '</a>'
+            var blogLink = rssfeedList.append('<div class="rss-newsitem"><a class="bloglink" target="_blank">' + jQuery(item).find('title').text() + '</a>'
               + '</div>').find('a').last();
-            blogLink.attr('href', $(item).find('link').text());
+            blogLink.attr('href', jQuery(item).find('link').text());
           });
         }
       },
       timeout: 20000
     });
 });
-  });
+//  });
   return widget;
 }
 
@@ -279,6 +279,6 @@ eventer(messageEvent,function(e) {
   if (e.data == ("embed-timeline-loaded")) {
     var key = e.message ? "message" : "data";
     var data = e[key];
-    $('.events').removeClass('hidden');
+    jQuery('.events').removeClass('hidden');
   }
 },false);
