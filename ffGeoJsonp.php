@@ -18,7 +18,7 @@ function is_valid_callback($subject)
 }
 
 
-$url ="ffGeoJson.json";
+$url ="../data/ffGeoJson.json";
 $data = file_get_contents($url);
 $json = json_encode($data);
 $json = json_decode($json);
