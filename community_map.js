@@ -112,12 +112,12 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
   };
   
   var options = L.extend({
-    divId: 'map',
+    divId: settings.divid || 'map',
     ffGeoJsonUrl: settings.ffGeoJsonUrl || "/map/ffGeoJson.json",
     getPopupHTML: renderPopup,
-    zoom: 5,
+    zoom: settings.zoom || 5,
     maxZoom: 8,
-    center: [51.5, 10.5]
+    center: settings.center || [51.5, 10.5]
   }, options);
   
   var widget = {};
