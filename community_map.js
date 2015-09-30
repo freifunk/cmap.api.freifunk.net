@@ -229,42 +229,45 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
     jQuery( "script.template#community-popup" ).html()
   );
   
-  widget.map.on('popupopen', function(e){
+    widget.map.on('popupopen', function(e){
+      if (settings.showEvents) {
 			jQuery('.events').communityTimeline({
 						source : e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id'),
 						title : 'Veranstaltungen',
 						limit: '2',
 						descLength: 30,
 						order : 'oldest-first'
-											
 				});
-    var url = settings.feedUrl
-        + '?limit=' + settings.postContentLimit + '&source='
-        + e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id');
-    console.log(url);
-    jQuery.ajax({
-      url: url,
-      error: function(err) {
-        console.log(err);
-      },
-      dataType: "jsonp",
-      success: function(data) {
-        $data = jQuery(jQuery.parseXML(data));
-        items = $data.find('item');
-        var rssfeed = jQuery(e.popup._container).find('.community-popup').append('<div class="rssfeed rss-container">').find('.rssfeed');
-        rssfeed.append('<div class="rss-header"><div class="rss-title">Neuigkeiten</div></div>');
-        var rssfeedList = rssfeed.append('<div class="rss-body"><div id="mCSB_1" class="rss-news mCustomScrollbar _mCS_1 mCS-autoHide"><div id="mCSB_1_container" class="mCustomScrollBox mCS-light-3 mCSB_vertical">').find('.rss-news');
-        if (items.length > 0) {
-          console.log('There are some items');
-          items.each(function(k, item) {
-            var blogLink = rssfeedList.append('<div class="rss-newsitem"><a class="bloglink" target="_blank">' + jQuery(item).find('title').text() + '</a>'
-              + '</div>').find('a').last();
-            blogLink.attr('href', jQuery(item).find('link').text());
-          });
-        }
-      },
-      timeout: 20000
-    });
+    }
+    if (settings.showNews) {	
+      var url = settings.feedUrl
+          + '?limit=' + settings.postContentLimit + '&source='
+          + e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id');
+      console.log(url);
+      jQuery.ajax({
+        url: url,
+        error: function(err) {
+          console.log(err);
+        },
+        dataType: "jsonp",
+        success: function(data) {
+          $data = jQuery(jQuery.parseXML(data));
+          items = $data.find('item');
+          var rssfeed = jQuery(e.popup._container).find('.community-popup').append('<div class="rssfeed rss-container">').find('.rssfeed');
+          rssfeed.append('<div class="rss-header"><div class="rss-title">Neuigkeiten</div></div>');
+          var rssfeedList = rssfeed.append('<div class="rss-body"><div id="mCSB_1" class="rss-news mCustomScrollbar _mCS_1 mCS-autoHide"><div id="mCSB_1_container" class="mCustomScrollBox mCS-light-3 mCSB_vertical">').find('.rss-news');
+          if (items.length > 0) {
+            console.log('There are some items');
+            items.each(function(k, item) {
+              var blogLink = rssfeedList.append('<div class="rss-newsitem"><a class="bloglink" target="_blank">' + jQuery(item).find('title').text() + '</a>'
+                + '</div>').find('a').last();
+              blogLink.attr('href', jQuery(item).find('link').text());
+            });
+          }
+        },
+        timeout: 20000
+      });
+    }
 });
 //  });
   return widget;
