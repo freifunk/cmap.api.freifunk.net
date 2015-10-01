@@ -1,5 +1,22 @@
 var FFCommunityMapWidget = function(settings, map_options, link) {
-  
+
+  var defaultOptions = {
+    ffGeoJsonUrl: "//api.freifunk.net/map/ffGeoJsonp.php?callback=?",
+    hideLocationButton: false,
+    hideLayerControl: false,
+    hideInfoBox: false,
+    feedUrl: "//api.freifunk.net/feed/feed.php",
+    newsContentLimit: 3,
+    eventsContentLimit: 2,
+    postContentLength: 30,
+    zoomLevel: 5,
+    center: [51.5,10.5],
+    divid: "map",
+    showEvents: false,
+    showNews : false,
+    mapboxId: "mapbox.streets"
+  };
+  var settings = jQuery.extend({}, defaultOptions, settings);
   var renderPopup = function (props, configs) {
     //console.log(props);
     //clean up values before rendering
@@ -106,18 +123,17 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
       });
     }
     
-    props.embedTimelineUrl = configs.embedTimelineUrl;
     //render html and return
     return widget.communityTemplate(props);
   };
   
   var options = L.extend({
-    divId: settings.divid || 'map',
+    divId: settings.divid,
     ffGeoJsonUrl: settings.ffGeoJsonUrl || "/map/ffGeoJson.json",
     getPopupHTML: renderPopup,
-    zoom: settings.zoom || 5,
+    zoom: settings.zoomLevel,
     maxZoom: 8,
-    center: settings.center || [51.5, 10.5]
+    center: settings.center
   }, options);
   
   var widget = {};
@@ -134,7 +150,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
   var osmlayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   });
-  
+  //console.log(options);
   //set default layer
   widget.map.addLayer(mapboxLayer);
   
@@ -234,8 +250,8 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
 			jQuery('.events').communityTimeline({
 						source : e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id'),
 						title : 'Veranstaltungen',
-						limit: '2',
-						descLength: 30,
+						limit: settings.eventsContentLimit,
+						descLength: postContentLength,
 						order : 'oldest-first'
 				});
     }
@@ -243,7 +259,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
       var url = settings.feedUrl
           + '?limit=' + settings.postContentLimit + '&source='
           + e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id');
-      console.log(url);
+      //console.log(url);
       jQuery.ajax({
         url: url,
         error: function(err) {
@@ -257,7 +273,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
           rssfeed.append('<div class="rss-header"><div class="rss-title">Neuigkeiten</div></div>');
           var rssfeedList = rssfeed.append('<div class="rss-body"><div id="mCSB_1" class="rss-news mCustomScrollbar _mCS_1 mCS-autoHide"><div id="mCSB_1_container" class="mCustomScrollBox mCS-light-3 mCSB_vertical">').find('.rss-news');
           if (items.length > 0) {
-            console.log('There are some items');
+            //console.log('There are some items');
             items.each(function(k, item) {
               var blogLink = rssfeedList.append('<div class="rss-newsitem"><a class="bloglink" target="_blank">' + jQuery(item).find('title').text() + '</a>'
                 + '</div>').find('a').last();

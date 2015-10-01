@@ -10,6 +10,27 @@ cd cmap.api.freifunk.net
 node server.js
 ```
 
+## Options
+
+Community map accepts options as JSON object
+
+| Name               | Standard                                           | Bedeutung                                                            |
+|--------------------|----------------------------------------------------|----------------------------------------------------------------------|
+| ffGeoJsonUrl       | "//api.freifunk.net/map/ffGeoJsonp.php?callback=?" | URL with API data, we need jsonp there                               |
+| hideLocationButton | false                                              |                                                                      |
+| hideLayerControl   | false                                              | hide or show layer box                                               |
+| hideInfoBox        | false                                              | hide or show info box                                                |
+| feedUrl            | "//api.freifunk.net/feed/feed.php"                 | a feed provided by https://github.com/freifunk/feed.api.freifunk.net |
+| newsContentLimit   | 3                                                  | number of news entries                                               |
+| eventsContentLimit | 2                                                  | number of event entries                                              |
+| postContentLength  | 30                                                 | length event headlines                                               |
+| zoomLevel          | 5                                                  | default zoom level on page load                                      |
+| center             | [51.5,10.5]                                        | initial center of map                                                |
+| divid              | "map"                                              | div id where map should be displayed                                 |
+| showEvents         | false                                              | show events in community popup                                       |
+| showNews           | false                                              | show news in community popup                                         |
+| mapboxId           | "mapbox.streets"                                   | id for your mapbox tiles                                             |
+
 ## Dependencies
 (external folder)
 
