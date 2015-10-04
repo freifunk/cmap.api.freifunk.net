@@ -251,7 +251,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
 						source : e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id'),
 						title : 'Veranstaltungen',
 						limit: settings.eventsContentLimit,
-						descLength: postContentLength,
+						descLength: settings.postContentLength,
 						order : 'oldest-first'
 				});
     }
