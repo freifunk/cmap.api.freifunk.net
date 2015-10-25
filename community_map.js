@@ -257,7 +257,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
     }
     if (settings.showNews) {	
       var url = settings.feedUrl
-          + '?limit=' + settings.postContentLimit + '&source='
+          + '?limit=' + settings.newsContentLimit + '&source='
           + e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id');
       //console.log(url);
       jQuery.ajax({
@@ -273,7 +273,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
           rssfeed.append('<div class="rss-header"><div class="rss-title">Neuigkeiten</div></div>');
           var rssfeedList = rssfeed.append('<div class="rss-body"><div id="mCSB_1" class="rss-news mCustomScrollbar _mCS_1 mCS-autoHide"><div id="mCSB_1_container" class="mCustomScrollBox mCS-light-3 mCSB_vertical">').find('.rss-news');
           if (items.length > 0) {
-            //console.log('There are some items');
+            console.log('There are some items');
             items.each(function(k, item) {
               var blogLink = rssfeedList.append('<div class="rss-newsitem"><a class="bloglink" target="_blank">' + jQuery(item).find('title').text() + '</a>'
                 + '</div>').find('a').last();

@@ -17,8 +17,22 @@ function is_valid_callback($subject)
         && ! in_array(mb_strtolower($subject, 'UTF-8'), $reserved_words);
 }
 
-
 $url ="../data/ffGeoJson.json";
+
+if ( isset($_GET['mode']) ) {
+	switch($_GET['mode']) {
+		case "summary":
+			$url = "../data/ffSummarizedDir.json";
+			break;
+		case "geojson":
+			$url ="../data/ffGeoJson.json";
+			break;
+		default:
+			$url ="../data/ffGeoJson.json";
+			break;
+	}
+}
+
 $data = file_get_contents($url);
 $json = json_encode($data);
 $json = json_decode($json);

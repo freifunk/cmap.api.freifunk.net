@@ -33,9 +33,9 @@ html, body, #map {
 /* community-popup */
 .community-popup h2, 
 .community-popup h3 { 
-  font-size: 12px;
-  margin: 0px;
-  color: #009ee0
+  font-size: 12px !important;
+  margin: 0px !important;
+  color: #009ee0 !important;
 }
 .community-popup .leaflet-container a {
   color: #009ee0;
