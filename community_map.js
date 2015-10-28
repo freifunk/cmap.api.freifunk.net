@@ -196,7 +196,7 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
   jQuery.getJSON(options.ffGeoJsonUrl, function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
       onEachFeature: function(feature, layer) {
-        layer.bindPopup(options.getPopupHTML(feature.properties, settings), { minWidth: 210 });
+        layer.bindPopup(options.getPopupHTML(feature.properties, settings), { minWidth: 210, maxHeight: 400 });
       },
       filter: function(feature, layer) {
         if (feature.geometry.coordinates[0] && feature.geometry.coordinates[1]) {
@@ -284,6 +284,9 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
         timeout: 20000
       });
     }
+    var px = widget.map.project(e.popup._latlng); // find the pixel location on the map where the popup anchor is
+    px.y -= e.popup._container.clientHeight*0.8; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+    widget.map.panTo(widget.map.unproject(px),{animate: true}); // pan to new center
 });
 //  });
   return widget;
