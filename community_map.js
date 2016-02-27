@@ -29,7 +29,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     if (props.twitter && !props.twitter.match(/^http([s]?):\/\/.*/)) {
       props.twitter = "https://twitter.com/" + props.twitter;
     }
-    if (props.irc && !props.irc.match(/^irc:.*/)) {
+    if (props.irc && !props.irc.match(/^irc([s]?):.*/)) {
       props.irc = "irc:" + props.irc;
     }
     if (props.jabber && !props.jabber.match(/^jabber:.*/)) {
