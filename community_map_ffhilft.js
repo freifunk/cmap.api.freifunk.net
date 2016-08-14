@@ -184,6 +184,15 @@ attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy
     });
     widget.map.addControl(locationButton);
   }
+
+  if (!settings.scrollWheelZoom) {
+    widget.map.scrollWheelZoom.disable();
+  }
+  
+  if (!settings.touchZoom && (('ontouchstart' in window) || navigator.MaxTouchPoints > 0)) {
+    widget.map.dragging.disable();
+    widget.map.tap.disable();
+  }
   
   if (!settings.hideLayerControl) {
     var controls = L.control.layers({

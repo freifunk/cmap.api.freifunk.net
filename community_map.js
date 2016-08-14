@@ -127,11 +127,21 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     return widget.communityTemplate(props);
   };
   
+  if (!settings.scrollWheelZoom) {
+    widget.map.scrollWheelZoom.disable();
+  }
+  
+  if (!settings.touchZoom && (('ontouchstart' in window) || navigator.MaxTouchPoints > 0)) {
+    widget.map.dragging.disable();
+    widget.map.tap.disable();
+  }
+
   var options = L.extend({
     divId: settings.divid,
     ffGeoJsonUrl: settings.ffGeoJsonUrl || "/map/ffGeoJson.json",
     getPopupHTML: renderPopup,
     zoom: settings.zoomLevel,
+    touchZoom: settings.touchZoom,
     maxZoom: 8,
     center: settings.center
   }, options);
