@@ -127,9 +127,9 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     return widget.communityTemplate(props);
   };
   
-  if (!settings.scrollWheelZoom) {
-    widget.map.scrollWheelZoom.disable();
-  }
+//  if (!settings.scrollWheelZoom) {
+//    widget.map.scrollWheelZoom.disable();
+//  }
   
   if (!settings.touchZoom && (('ontouchstart' in window) || navigator.MaxTouchPoints > 0)) {
     widget.map.dragging.disable();
@@ -156,6 +156,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
   var mapboxLayer = L.tileLayer('https://api.mapbox.com/styles/v1/freienetzwerke/ckatogpoebrsz1io160d3e80i/tiles/{z}/{x}/{y}?access_token=' + settings.mapboxId, {
 	  attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 	  tileSize: 512,
+	  zoomOffset: -1,
   }); 
   
   var osmlayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
