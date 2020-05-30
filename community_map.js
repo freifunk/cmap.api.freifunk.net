@@ -152,10 +152,11 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     options.center,
     options.zoom
   );
-  
-  var mapboxLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/'+settings.mapboxId+'/{z}/{x}/{y}.png', {
-attribution: '<a href="https://www.mapbox.com/about/maps/" target="_blank">&copy; Mapbox &copy; OpenStreetMap</a> <a class="mapbox-improve-map" href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a>'
-  });
+ 
+  var mapboxLayer = L.tileLayer('https://api.mapbox.com/styles/v1/freienetzwerke/ckatogpoebrsz1io160d3e80i/tiles/{z}/{x}/{y}?access_token=' + settings.mapboxId, {
+	  attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	  tileSize: 512,
+  }); 
   
   var osmlayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
