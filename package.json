@@ -1,0 +1,19 @@
+{
+  "name": "Freifunk_Community_Map",
+  "description": "Display the freifunk community map",
+  "version": "1.0.0",
+  "maintainers": [
+    {
+      "name": "Andi Bräu",
+      "email": "freifunk@andi95.de",
+      "web": "https://blog.andi95.de"
+    }
+  ],
+  "dependencies": {
+    "jquery": "~3",
+    "underscore": "~1.10",
+    "leaflet": "~1",
+    "leaflet.markercluster": "~1"
+  },
+  "homepage": "https://freifunk.net"
+}

@@ -34,8 +34,8 @@ Community map accepts options as JSON object
 ## Dependencies
 (external folder)
 
-* jQuery v2.0.3
-* underscore.js v1.5.2
+* jQuery
+* underscore.js
 * leaflet.js
 
 ## Contribute
