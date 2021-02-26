@@ -1,4 +1,6 @@
-<?php header('content-type: application/json; charset=utf-8');
+<?php 
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
 
 function is_valid_callback($subject)
 {
@@ -43,6 +45,7 @@ if( ! isset($_GET['callback']) )
 
 # JSONP if valid callback
 if(is_valid_callback($_GET['callback']))
+    header('Content-Type: application/javascript', true);
     exit("{$_GET['callback']}($json)");
 
 # Otherwise, bad request
