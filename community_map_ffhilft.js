@@ -20,8 +20,8 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
   var renderPopup = function (props, configs) {
     //console.log(props);
     //clean up values before rendering
-    if (props.url && !props.url.match(/^http([s]?):\/\/.*/)) { 
-      props.url = "http://" + props.url; 
+    if (props.url && !props.url.match(/^http([s]?):\/\/.*/)) {
+      props.url = "http://" + props.url;
     }
     if (props.email && !props.email.match(/^mailto:.*/)) {
       props.email = "mailto:" + props.email;
@@ -38,15 +38,15 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     if (props.identica && !props.identica.match(/^identica:.*/)) {
       props.identica = "identica:" + props.identica;
     }
-    
+
     function getAgeFromProperties(props) {
       var ageindays = -1;
       if (props.mtime) {
         ageindays = Math.round((Math.round(+new Date()/1000) - props.mtime) / (3600*24));
-      } 
+      }
       return ageindays;
     };
-    
+
     function getStateFromProperties(props) {
       var state = 'unknown';
       if (props.mtime) {
@@ -60,23 +60,23 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
         } else {
           state = 'outdated';
         }
-      } 
+      }
       return state;
     };
     props.age = getAgeFromProperties(props);
     props.state = getStateFromProperties(props);
-    
+
     props.contacts =  [];
     if (props.url) {
       props.contacts.push({
-        type: 'www',
+        type: 'home',
          url : props.url
       });
     }
 
     if (props.email) {
       props.contacts.push({
-        type: 'email',
+        type: 'envelope',
         url : props.email
       });
     }
@@ -97,14 +97,14 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
 
     if (props.irc) {
       props.contacts.push({
-        type: 'irc',
+        type: 'commenting-o',
         url : props.irc
       });
     }
 
     if (props.jabber) {
       props.contacts.push({
-        type: 'jabber',
+        type: 'xmpp',
         url : props.jabber
       });
     }
@@ -118,15 +118,22 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
 
     if (props.googleplus) {
       props.contacts.push({
-        type: 'googleplus',
+        type: 'google-plus',
         url : props.googleplus
       });
     }
-    
+
+    if (props.matrix) {
+      props.contacts.push({
+        type: 'matrix-org',
+        url : props.matrix
+      });
+    }
+
     //render html and return
     return widget.communityTemplate(props);
   };
-  
+
   var options = L.extend({
     divId: settings.divid,
     ffGeoJsonUrl: settings.ffGeoJsonUrl || "/map/ffGeoJson.json",
@@ -135,7 +142,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     maxZoom: 8,
     center: settings.center
   }, options);
-  
+
   var widget = {};
   widget.map = L.map(options.divId, map_options);
   widget.map.setView(
@@ -147,21 +154,21 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
 	  attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 	  tileSize: 512,
    	  zoomOffset: -1,
-  }); 
-  
+  });
+
   var osmlayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   });
   //console.log(options);
   //set default layer
   widget.map.addLayer(mapboxLayer);
-  
-  var clusters = L.markerClusterGroup({ 
-    spiderfyOnMaxZoom: false, 
-    showCoverageOnHover: false, 
-    maxClusterRadius: 40 
+
+  var clusters = L.markerClusterGroup({
+    spiderfyOnMaxZoom: false,
+    showCoverageOnHover: false,
+    maxClusterRadius: 40
   }).addTo(widget.map);
-  
+
   if (!settings.hideLocationButton) {
     var locationButton = new L.Control.Button({
       iconUrl: "//api.freifunk.net/map/images/location-icon.png",
@@ -178,8 +185,8 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
           });
           /* try to read the user location and center map there */
           widget.map.locate({
-            setView: true, 
-            maxZoom: 8, 
+            setView: true,
+            maxZoom: 8,
             timeout: 30000
           });
         }
@@ -190,19 +197,19 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
   if (!settings.scrollWheelZoom) {
     widget.map.scrollWheelZoom.disable();
   }
-  
+
   if (!settings.touchZoom && (('ontouchstart' in window) || navigator.MaxTouchPoints > 0)) {
     widget.map.dragging.disable();
     widget.map.tap.disable();
   }
-  
+
   if (!settings.hideLayerControl) {
     var controls = L.control.layers({
       "Gray": mapboxLayer,
       "OSM": osmlayer
     }).addTo(widget.map);
   }
-  
+
 //  jQuery.getJSON('', function(configs) {
   jQuery.getJSON(options.ffGeoJsonUrl, function(geojson) {
     var geoJsonLayer = L.geoJson(geojson, {
@@ -231,7 +238,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
         return marker;
       }
     }).addTo(clusters);
-    
+
     //add stats info box
     if (!settings.hideInfoBox) {
       var legend = L.control({position: 'bottomleft'});
@@ -240,12 +247,12 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
         var projects= 0;
         var cities = 0;
         _.each(geojson.features, function(item, key, list) {
-          if (item.properties.socialprojects && item.properties.socialprojects.number) { 	
-	    projects += parseInt(item.properties.socialprojects.number); 
+          if (item.properties.socialprojects && item.properties.socialprojects.number) {
+	    projects += parseInt(item.properties.socialprojects.number);
 	  }
 	  if (item.properties.socialprojects) {
 	    cities += 1;
-	  } 
+	  }
         });
         div.innerHTML = '<strong>' + cities + ' Orte</strong>';
         div.innerHTML += '<hr>';
@@ -255,13 +262,13 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
       legend.addTo(widget.map);
     }
   });
-  
+
   //initialize underscore templating
   _.templateSettings.variable = "props";
   widget.communityTemplate = _.template(
     jQuery( "script.template#community-popup" ).html()
   );
-  
+
     widget.map.on('popupopen', function(e){
       if (settings.showEvents) {
 			jQuery('.events').communityTimeline({
@@ -272,7 +279,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
 						order : 'oldest-first'
 				});
     }
-    if (settings.showNews) {	
+    if (settings.showNews) {
       var url = settings.feedUrl
           + '?limit=' + settings.newsContentLimit + '&source='
           + e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id');

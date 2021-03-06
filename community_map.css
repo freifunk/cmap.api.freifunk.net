@@ -33,8 +33,8 @@ html, body, #map {
 /* /MarkerCluster */
 
 /* community-popup */
-.community-popup h2, 
-.community-popup h3 { 
+.community-popup h2,
+.community-popup h3 {
   font-size: 12px !important;
   margin: 0px !important;
   color: #009ee0 !important;
@@ -74,55 +74,11 @@ html, body, #map {
   display: block;
   width: 30px;
   height: 30px;
-  border-radius: 4px;
-  background: url(images/contact_icons.png);
-  background-repeat:no-repeat;
-  background-position:right top;
-  background-size: 30px 390px;
-}
-.community-popup ul.contacts li.contact a.button.www {
- background-position: 0px 0px;
-}
-.community-popup ul.contacts li.contact a.button.email {
- background-position: 0px -30px;
-}
-.community-popup ul.contacts li.contact a.button.phone {
- background-position: 0px -60px;
-}
-.community-popup ul.contacts li.contact a.button.twitter {
- background-position: 0px -90px;
-}
-.community-popup ul.contacts li.contact a.button.irc {
- background-position: 0px -120px;
-}
-.community-popup ul.contacts li.contact a.button.jabber {
- background-position: 0px -150px;
-}
-.community-popup ul.contacts li.contact a.button.rss {
- background-position: 0px -180px;
-}
-.community-popup ul.contacts li.contact a.button.facebook {
- background-position: 0px -210px;
-}
-.community-popup ul.contacts li.contact a.button.flickr {
- background-position: 0px -240x;
-}
-.community-popup ul.contacts li.contact a.button.googleplus {
- background-position: 0px -270px;
-}
-.community-popup ul.contacts li.contact a.button.identica {
- background-position: 0px -300px;
-}
-.community-popup ul.contacts li.contact a.button.vimeo {
- background-position: 0px -330px;
-}
-.community-popup ul.contacts li.contact a.button.youtube {
- background-position: 0px -360px;
 }
 
 .community-popup img.logo {
  height: 64px;
- 
+
 }
 
 /* /community-popup */
@@ -167,7 +123,7 @@ html, body, #map {
 }
 
 .rss-container *,.rss-container *:after, *:before { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
-  
+
 .rss-container, .rss-body, .rss-newss, .rss-news-date .date {
 	position: relative;
 	top: auto;
@@ -260,5 +216,3 @@ html, body, #map {
 .hidden {
   display: none !important;
 }
-
-
