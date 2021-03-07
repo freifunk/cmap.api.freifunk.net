@@ -272,7 +272,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     }
     if (settings.showNews) {
       var url = settings.feedUrl
-          + '?format=json&limit=' + settings.newsContentLimit + '&source='
+          + '?format=json&items=' + settings.newsContentLimit + '&source='
           + e.popup._contentNode.getElementsByClassName('community-popup')[0].getAttribute('data-id');
       console.log(url);
       jQuery.ajax({
