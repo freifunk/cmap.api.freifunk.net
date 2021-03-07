@@ -21,7 +21,7 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     //console.log(props);
     //clean up values before rendering
     if (props.url && !props.url.match(/^http([s]?):\/\/.*/)) {
-      props.url = "http://" + props.url;
+      props.url = "https://" + props.url;
     }
     if (props.email && !props.email.match(/^mailto:.*/)) {
       props.email = "mailto:" + props.email;
@@ -37,6 +37,9 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
     }
     if (props.identica && !props.identica.match(/^identica:.*/)) {
       props.identica = "identica:" + props.identica;
+    }
+    if (props.matrix && !props.matrix.match(/^http([s]?):\/\/.*/)) {
+      props.matrix = "https://" + props.matrix;
     }
 
     function getAgeFromProperties(props) {
@@ -113,13 +116,6 @@ var FFCommunityMapWidget = function(settings, map_options, link) {
       props.contacts.push({
         type: 'identica',
         url : props.identicy
-      });
-    }
-
-    if (props.googleplus) {
-      props.contacts.push({
-        type: 'google-plus',
-        url : props.googleplus
       });
     }
 
