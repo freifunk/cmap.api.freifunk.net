@@ -11,9 +11,9 @@
   ],
   "dependencies": {
     "jquery": "~3",
-    "underscore": "~1.10",
     "leaflet": "~1",
-    "leaflet.markercluster": "~1"
+    "leaflet.markercluster": "~1",
+    "underscore": "~1.10"
   },
   "homepage": "https://freifunk.net"
 }
