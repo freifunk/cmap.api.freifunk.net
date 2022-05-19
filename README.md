@@ -7,6 +7,7 @@ Community Map
 ```
 git clone https://github.com/freifunk/cmap.api.freifunk.net.git
 cd cmap.api.freifunk.net
+yarn upgrade
 yarn install
 node server.js
 ```
