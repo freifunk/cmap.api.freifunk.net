@@ -11,7 +11,7 @@ yarn install
 node server.js
 ```
 
-If you don't see any tiles: Copy `config.json.sample` to `config.json`, add your mapbox id and then start the server.
+If you don't see any tiles: Copy `config.json.sample` to `config.json`, add your mapbox id to select your tileset and then start the server.
 
 ## Options
 

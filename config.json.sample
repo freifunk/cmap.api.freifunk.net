@@ -6,5 +6,5 @@
 	"postContentLength": 30,
 	"showNews": true,
 	"showEvents": true,
-	"mapboxId": "<your mapbox api id>"
+	"mapboxId": "<your mapbox tileset id>"
 }
