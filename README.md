@@ -11,6 +11,8 @@ yarn install
 node server.js
 ```
 
+If you don't see any tiles: Copy `config.json.sample` to `config.json`, add your mapbox id and then start the server.
+
 ## Options
 
 Community map accepts options as JSON object
