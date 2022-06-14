@@ -1,8 +1,7 @@
 Community Map
 =============
 
-## Setup
------
+## Setup
 
 ```
 git clone https://github.com/freifunk/cmap.api.freifunk.net.git
