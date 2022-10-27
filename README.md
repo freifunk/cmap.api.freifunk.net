@@ -7,6 +7,8 @@ Community Map
 git clone https://github.com/freifunk/cmap.api.freifunk.net.git
 cd cmap.api.freifunk.net
 yarn install
+cp config.json.sample config.json
+# maybe edit your config.json
 node server.js
 ```
 
@@ -42,4 +44,4 @@ Community map accepts options as JSON object
 
 ## Contribute
 
-The community map is a fun & visual way to know more about open-source communities across Asia. If you think there are cool features that can be integrated in the map, you can let us know by opening an issue, or sending pull requests. Bug reports are equally welcomed.
+The community map is a fun & visual way to know more about open-source communities across Germany. If you think there are cool features that can be integrated in the map, you can let us know by opening an issue, or sending pull requests. Bug reports are equally welcomed.
