@@ -11,7 +11,7 @@
   ],
   "dependencies": {
     "jquery": "~3",
-    "underscore": "~1.13.0",
+    "underscore": "~1.13.8",
     "leaflet": "~1",
     "leaflet.markercluster": "~1"
   },
